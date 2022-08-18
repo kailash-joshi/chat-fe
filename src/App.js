@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import Chat from "./chat/chat";
+import Home from "./home/home";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useParams,
+} from "react-router-dom";
+import "./App.scss";
+import React from "react";
+import io from "socket.io-client";
+
+const socket = io.connect("/");
+
+function Appmain(props) {
+  let params = useParams();
+  console.log(params);
+  return (
+    <React.Fragment>
+      <div className="right">
+        <Chat
+          username={params.username}
+          roomname={params.roomname}
+          socket={socket}
+        />
+      </div>
+    </React.Fragment>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" exact element={<Home socket={socket} />} />
+
+          <Route path="/chat/:roomname/:username" element={<Appmain />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
