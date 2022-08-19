@@ -44,7 +44,7 @@
     }
   }
   .chat-message {
-    @include scrollbars(5px, $backgroundColor, $yellowColor);
+    @include scrollbars(5px, $backgroundColor, $blackColor);
     height: 70%;
     display: flex;
     overflow-y: auto;
@@ -57,16 +57,16 @@
       max-width: 220px;
       margin-left: 0px;
       p {
-        color: #b4b6be;
+        color: #f5f6fb;
         font-size: 1rem;
         font-weight: 300;
-        background-color: #250202;
+        background-color: #df5e7c;
         border-radius: 0px 10px 10px 10px;
         padding: 1rem;
       }
 
       span {
-        color: #b4b6be;
+        color: #000000;
         font-size: 0.6rem;
         padding-left: 0.5rem;
         font-weight: 200;
@@ -80,7 +80,7 @@
       margin-right: 0px;
       max-width: 220px;
       p {
-        background-color: $redColor;
+        background-color: $greenColor;
         text-align: end;
         color: white;
         border-radius: 10px 0px 10px 10px;
@@ -110,7 +110,7 @@
       }
     }
     button {
-      background-color: $yellowColor;
+      background-color: $blackColor;
       width: 20%;
       border-radius: 0px 5px 5px 0px;
       border: none;

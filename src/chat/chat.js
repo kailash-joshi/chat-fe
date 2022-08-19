@@ -1,25 +1,13 @@
 import "./chat.scss";
-// import { to_Decrypt, to_Encrypt } from "../aes.js";
-import { process } from "../store/action/index";
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-//gets the data from the action object and reducers defined earlier
 function Chat({ username, roomname, socket }) {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const dispatch = useDispatch();
-
-  //   const dispatchProcess = (msg) => {
-  //     dispatch(process(msg));
-  //   };
-
   useEffect(() => {
     socket.on("message", (data) => {
-      //decypt the message
       const ans = data.text;
-      //   dispatchProcess(ans);
-      console.log(ans);
+
       let temp = messages;
       temp.push({
         userId: data.userId,
@@ -28,11 +16,22 @@ function Chat({ username, roomname, socket }) {
       });
       setMessages([...temp]);
     });
-  }, [socket]);
+    socket.on("welcome message", (data) => {
+      const ans = data.text;
+
+      let temp = messages;
+      if (messages[0]?.text === `Welcome ${data.username}`) return;
+      temp.push({
+        userId: data.userId,
+        username: data.username,
+        text: ans,
+      });
+      setMessages([...temp]);
+    });
+  }, [socket, messages]);
 
   const sendData = () => {
     if (text !== "") {
-      //encrypt the message here
       const ans = text;
       socket.emit("chat", ans);
       setText("");
@@ -46,8 +45,6 @@ function Chat({ username, roomname, socket }) {
 
   useEffect(scrollToBottom, [messages]);
 
-  console.log(messages, "mess");
-
   return (
     <div className="chat">
       <div className="user-name">
@@ -56,17 +53,17 @@ function Chat({ username, roomname, socket }) {
         </h2>
       </div>
       <div className="chat-message">
-        {messages.map((i) => {
+        {messages.map((i, index) => {
           if (i.username === username) {
             return (
-              <div className="message">
+              <div className="message" key={index}>
                 <p>{i.text}</p>
                 <span>{i.username}</span>
               </div>
             );
           } else {
             return (
-              <div className="message mess-right">
+              <div className="message mess-right" key={index}>
                 <p>{i.text} </p>
                 <span>{i.username}</span>
               </div>
